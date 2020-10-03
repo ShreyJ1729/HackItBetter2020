@@ -19,6 +19,7 @@ target_size = (256, 256, 3)
 
 def getPredictedCrop(image_data):
   pred_crop_data = []
+  pred_coords_all = []
   faces_pred = face_detector.detect_faces(image_data)
   for face in faces_pred:
     pred_box = face['box']
@@ -26,11 +27,11 @@ def getPredictedCrop(image_data):
       if pred_box[i] < 0:
         pred_box[i] = 0
       # also add case for if x is more than width or y is more than height
-    pred_box = [pred_box[0], pred_box[0]+pred_box[2], pred_box[1], pred_box[1]+pred_box[3]]
-    pred_box = image_data[pred_box[2]:pred_box[3], pred_box[0]:pred_box[1]]
+    pred_coords = [pred_box[0], pred_box[0]+pred_box[2], pred_box[1], pred_box[1]+pred_box[3]]
+    pred_box = image_data[pred_coords[2]:pred_coords[3], pred_coords[0]:pred_coords[1]]
     pred_crop_data.append(pred_box)
-  return pred_crop_data
-
+    pred_coords_all.append(pred_coords)
+  return (pred_crop_data, pred_coords_all)
 
 while(True):
     start = time.time()
@@ -38,14 +39,18 @@ while(True):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     faces_pred = face_detector.detect_faces(frame)
     # get mask model prediction for each crop (face)
-    for pred_crop in getPredictedCrop(frame):
+    pred_crop_all = getPredictedCrop(frame)
+    for i in range(len(pred_crop_all[0])):
+        pred_crop = pred_crop_all[0][i]
+        pred_coords = pred_crop_all[1][i]
         im = np.asarray(Image.fromarray(pred_crop).resize(target_size[:2]))/255.
         raw_pred = model.predict(np.expand_dims(im, 0))
+        print(pred_coords)
         # parse prediction
         if raw_pred[0][0] > 0.00001:
-            cv2.putText(frame, "Without Mask: " + str(raw_pred), (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 0))
+            cv2.putText(frame, "no_mask: " + str(raw_pred), (pred_coords[0]*7//10, pred_coords[2]), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 0))
         else:
-            cv2.putText(frame, "With Mask" + str(raw_pred), (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 0))
+            cv2.putText(frame, "with_mask" + str(raw_pred), (pred_coords[0]*7//10, pred_coords[2]), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 0))
         # draw predicted face bboxes
     for face in faces_pred:
         box=face['box']
