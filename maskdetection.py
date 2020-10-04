@@ -15,7 +15,8 @@ face_detector = MTCNN()
 vid = cv2.VideoCapture(0)
 cdict = {0: "With Mask", 1: "No Mask"}
 target_size = (256, 256, 3)
-
+inStore = 0
+mask = 0
 
 def getPredictedCrop(image_data):
   pred_crop_data = []
@@ -36,6 +37,7 @@ def getPredictedCrop(image_data):
 while(True):
     start = time.time()
     ret, frame = vid.read()
+    print(ret)
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     faces_pred = face_detector.detect_faces(frame)
     # get mask model prediction for each crop (face)
