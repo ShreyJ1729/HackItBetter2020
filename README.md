@@ -4,7 +4,9 @@
 Mask detection, website for visualization, (&amp; deploying on RPI?)
 
 
-Presentation Video
+Presentation Video Link: https://www.youtube.com/watch?v=gSGQ7Trypsk
+Devpost Link: https://devpost.com/software/hackitbetter2020
+
 [![MaskNet Presentation Video](http://img.youtube.com/vi/gSGQ7Trypsk/0.jpg)](http://www.youtube.com/watch?v=gSGQ7Trypsk "MaskNet: Automated Face Mask Detection for better COVID Data Analytics | HackItBetter2020")
 
 
