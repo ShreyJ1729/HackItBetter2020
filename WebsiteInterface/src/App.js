@@ -92,12 +92,6 @@ export default class App extends React.PureComponent {
     demoMask: 4
   };
 
-  componentDidMount = () => {
-    document.addEventListener("keydown", (event) => {
-      if (event.keyCode == 188) this.setState({demoCrowd: this.state.demoCrowd + 1})
-      if (event.keyCode == 190) this.setState({demoMask: this.state.demoMask + 1, demoCrowd: this.state.demoCrowd + 1})
-    }, false);
-  }
 
   handleMarkerClick = () => {
     this.setState({ isMarkerShown: false });
