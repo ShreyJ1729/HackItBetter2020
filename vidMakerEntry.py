@@ -7,6 +7,7 @@ import numpy as np
 from mtcnn import MTCNN
 import time
 import PIL.Image as Image
+import requests 
 
 model = load_model("256x256_MaskDetector_9860.h5")
 
@@ -23,6 +24,16 @@ target_size = (256, 256, 3)
 inStore = 0
 mask = 0
 
+import pyrebase
+ config = {
+  "apiKey": "all",
+  "authDomain": "this",
+  "databaseURL": "info is",
+  "storageBucket": "private",
+  "serviceAccount": "we will not post it on github :DDD"
+}
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
 
 def getPredictedCrop(image_data):
   pred_crop_data = []
@@ -95,6 +106,10 @@ while cap.isOpened():
     buffer = frame
     out.write(frame)
     print(frameNumber)  
+    # gonna keep api endpoint and stuff private yk bc DDOSING
+    db.child("storeData").push({"prev": prev_center, "next": next_center, "mask": raw_pred})
+    # oh boy sorry ethan now ur replit server is gonna have to do the data stuff rip
+    # welp its ok i believe in u
     frameNumber += 1
     end = time.time()
     print(1/(end-start), " FPS")
