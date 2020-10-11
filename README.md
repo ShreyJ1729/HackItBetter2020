@@ -1,4 +1,4 @@
-# MaskNet: Automated Face Mask Detection For Better COVID Data Analytics
+# MaskNet: Automated Face Mask Detection For Better COVID Data Analytics | HackItBetter2020
 
 ### Written by Shrey J. and Ethan S.
 Mask detection, website for visualization, (&amp; deploying on RPI?)
